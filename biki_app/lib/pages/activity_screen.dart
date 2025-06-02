@@ -24,7 +24,7 @@ class ActivityScreen extends StatelessWidget {
             SizedBox(width: 10), // Add some spacing between the buttons
             ElevatedButton(
               onPressed: () {
-          Navigator.pushNamed(context, '/flashcards');
+          Navigator.pushNamed(context, '/game1');
               },
               child: Text("Game"),
             ),
