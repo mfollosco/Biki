@@ -4,6 +4,7 @@ import 'pages/home.dart';
 import 'pages/analytics.dart';
 import 'pages/activity_screen.dart';
 import 'flashcards/flashcards.dart';
+import 'pages/comparison/comparison.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         '/analytics': (context) => AnalyticsScreen(),
         '/activity': (context) => ActivityScreen(),
         '/flashcards': (context) => Flashcards(),
+        '/game1': (context) => Comparison(),
       },
     );
   }
