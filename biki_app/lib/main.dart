@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/login.dart';
-import 'pages/comparsion/comparison.dart';
+import 'pages/comparison/comparison.dart';
 
 void main() {
   runApp(const MyApp());
