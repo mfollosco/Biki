@@ -17,13 +17,15 @@ class _ComparisonState extends State<Comparison>{
   late Question currentQ;
   String? leftDropped;
   String? rightDropped;
+  bool? isCorrect;
   final FlutterTts flutterTts = FlutterTts();
 
   @override
   void initState(){
     super.initState();
     shuffledQs = List<Question>.from(questions)..shuffle();
-    currentQ = questions[Random().nextInt(questions.length)];
+    currentQIndex = 0;
+    currentQ = shuffledQs[currentQIndex];
     flutterTts.setSpeechRate(0.6);
     flutterTts.setPitch(1.0);
   }
@@ -103,10 +105,19 @@ class _ComparisonState extends State<Comparison>{
 
   void checkAnswer(){
     if (leftDropped != null && rightDropped != null){
+      setState((){
+        isCorrect = isAnswerCorrect;
+      });
+
       if (isAnswerCorrect){
         nextQuestion();
       }
       else{
+        Future.delayed(Duration(milliseconds: 500), (){
+          setState((){
+            isCorrect = null;
+          });
+        });
       }
     }
   }
@@ -126,10 +137,20 @@ class _ComparisonState extends State<Comparison>{
                     if (currentQ.contextImage != null)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
-                        child: Image.asset(
-                          currentQ.contextImage!,
-                          width: 250,
-                          height: 250,
+                        child: Container(
+                          width: 270,
+                          height: 270,
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(104, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            currentQ.contextImage!,
+                            width: 250,
+                            height: 250,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     Row(
@@ -174,7 +195,9 @@ class _ComparisonState extends State<Comparison>{
                               width: 120,
                               height: 120,
                               decoration: BoxDecoration(
-                                color:  Color.fromARGB(255, 174, 233, 177),
+                                color: isCorrect == false
+                                 ? Color.fromARGB(255, 239, 75, 75)
+                                 : Color.fromARGB(255, 174, 233, 177),
                                 border: Border.all(color: Colors.grey),
                               ),
                               child: leftDropped != null
@@ -215,7 +238,9 @@ class _ComparisonState extends State<Comparison>{
                               width: 120,
                               height: 120,
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 174, 233, 177),
+                                color: isCorrect == false
+                                 ? Color.fromARGB(255, 239, 75, 75)
+                                 : Color.fromARGB(255, 174, 233, 177),
                                 border:Border.all(color: Colors.grey),
                               ),
                               child: rightDropped != null
@@ -281,6 +306,19 @@ class _ComparisonState extends State<Comparison>{
                       ),
                     ),
                   ],
+                ),
+              ),
+              Positioned(
+                top: 20,
+                left: 20,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                  },
+                  child: Image.asset(
+                    'assets/images/BackButton.png',
+                    width: 80,
+                  ),
                 ),
               ),
             ],
