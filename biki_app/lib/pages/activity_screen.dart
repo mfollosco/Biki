@@ -26,7 +26,14 @@ class ActivityScreen extends StatelessWidget {
               onPressed: () {
           Navigator.pushNamed(context, '/game1');
               },
-              child: Text("Game"),
+              child: Text("Game 1"),
+            ),
+            SizedBox(width: 10), // Add some spacing between the buttons
+            ElevatedButton(
+              onPressed: () {
+          Navigator.pushNamed(context, '/game2');
+              },
+              child: Text("Game 2"),
             ),
           ],
         )));

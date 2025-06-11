@@ -1,3 +1,4 @@
+import 'package:BiKi/drag-game2/game2.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
 import 'pages/home.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/activity': (context) => ActivityScreen(),
         '/flashcards': (context) => Flashcards(),
         '/game1': (context) => Comparison(),
+        '/game2': (context) => DragGame2(),
       },
     );
   }
