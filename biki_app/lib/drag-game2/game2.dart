@@ -73,61 +73,84 @@ class _DragGame2State extends State<DragGame2> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Draggable<String>(
-                data: currentQuestion.wrong_ans,
-                feedback: Material(
-                  child: Text(currentQuestion.wrong_ans, style: TextStyle(fontSize: 18, color: Colors.blue)),
+              GestureDetector(
+                onTap: () {
+                  _speak(currentQuestion.wrong_txt);
+                },
+                child: Draggable<List>(
+                  data: [currentQuestion.wrong_txt, currentQuestion.wrong_img],
+                  feedback: Container(
+                    height: 200,
+                    width:400,
+                    child: Image.asset(currentQuestion.wrong_img),
+                  ),
+                  child: Container(
+                    height: 200,
+                    width:400,
+                    child: Image.asset(currentQuestion.wrong_img, height: 100, width: 200),
+                  ),
                 ),
-                child: Text(currentQuestion.wrong_ans, style: TextStyle(fontSize: 18)),
               ),
               SizedBox(width: 20),
-              Draggable<String>(
-                data: currentQuestion.answer,
-                feedback: Material(
-                  child: Text(currentQuestion.answer, style: TextStyle(fontSize: 18, color: Colors.blue)),
+              GestureDetector(
+                onTap: () {
+                  _speak(currentQuestion.answer_txt);
+                },
+                child: Draggable<List>(
+                  data: [currentQuestion.answer_txt, currentQuestion.answer_img],
+                  feedback: Container(
+                    height: 200,
+                    width: 400,
+                    child: Image.asset(currentQuestion.answer_img),
+                  ),
+                  child: Container(
+                    height: 200,
+                    width: 400,
+                    child: Image.asset(currentQuestion.answer_img, height: 100, width: 200),
+                  ),
                 ),
-                child: Text(currentQuestion.answer, style: TextStyle(fontSize: 18)),
               ),
             ],
           ),
 
-          SizedBox(height: 50),
+          SizedBox(height: 10),
 
           // DRAG TARGET
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(currentQuestion.question_pt1),
-                DragTarget<String>(
+                Image.asset(currentQuestion.img1, height: 100, width: 200),
+                DragTarget<List>(
                   builder: (context, candidateData, rejectedData) {
-                    return Container(
+                    return draggedAnswer != null
+                    ? Container(
                       height: 80,
-                      width: 200,
+                      width: 250,
                       color: Colors.blue[100],
                       child: Center(
-                        child: Text(
-                          draggedAnswer ?? "Drop Answer Here",
-                          style: TextStyle(
-                            color: draggedAnswer != null ? Colors.black : Colors.grey,
-                          ),
-                        ),
+                        child: Image.asset(draggedAnswer!, height:100, width:200)
                       ),
+                    )
+                    : Container(
+                      height: 80,
+                      width: 250,
+                      color: Colors.blue[100],
                     );
                   },
-                  onAccept: (receivedAnswer) async {
+                  onAcceptWithDetails: (receivedAnswer) async {
                     setState(() {
-                      draggedAnswer = receivedAnswer; // Store the dragged answer
+                      draggedAnswer = receivedAnswer.data[1]; // Store the dragged answer
                     });
-                    print(receivedAnswer);
+                    print(receivedAnswer.data);
                     await _speak(currentQuestion.question_pt1);
                     await Future.delayed(Duration(milliseconds: 1500)); // 500ms pause
-                    await _speak(receivedAnswer);
+                    await _speak(receivedAnswer.data[0]);
                     await Future.delayed(Duration(milliseconds: 1500)); // 500ms pause
                     await _speak(currentQuestion.question_pt2);
                   },
                 ),
-                Text(currentQuestion.question_pt2),
+                Image.asset(currentQuestion.img2, height: 100, width: 200),
               ],
             ),
           ),
@@ -142,7 +165,7 @@ class _DragGame2State extends State<DragGame2> {
                   SnackBar(content: Text("Please drag an answer to the target before submitting!")),
                 );
               } else {
-                bool isCorrect = draggedAnswer == currentQuestion.answer;
+                bool isCorrect = draggedAnswer == currentQuestion.answer_img;
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
@@ -171,12 +194,22 @@ class _DragGame2State extends State<DragGame2> {
               // Repeat Button
               Column(
                 children: [
-                  IconButton(onPressed: () => _speak("The butterfly is blank the wheelbarrow"), icon: const Icon(Icons.speaker)),
+                    GestureDetector(
+                    onTap: () {
+                      _speak("The butterfly is blank the wheelbarrow");
+                    },
+                    child: Image.asset('assets/images/SpanishOption.png', height: 100, width: 200)
+                  ),
                 ],
               ),
               Column(
                 children: [
-                  IconButton(onPressed: () => _speak("The butterfly is blank the wheelbarrow"), icon: const Icon(Icons.refresh)),
+                  GestureDetector(
+                    onTap: () {
+                      _speak("The butterfly is blank the wheelbarrow");
+                    },
+                    child: Image.asset('assets/images/EnglishOption.png', height: 100, width: 200)
+                  ),                
                 ],
               ),
             ],

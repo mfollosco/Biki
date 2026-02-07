@@ -4,9 +4,11 @@ import 'dart:io';
 class Question {
   final String question_pt1;
   final String question_pt2;
-  final String answer;
+  final String answer_txt;
   final String main_img;
-  final String wrong_ans;
+  final String wrong_txt;
+  final String answer_img;
+  final String wrong_img;
   final String img1;
   final String img2;
   final String whole_ans;
@@ -14,9 +16,11 @@ class Question {
   Question({
     required this.question_pt1,
     required this. question_pt2, 
-    required this.answer, 
+    required this.answer_txt, 
     required this.main_img,
-    required this.wrong_ans,
+    required this.wrong_txt,
+    required this.answer_img,
+    required this.wrong_img,
     required this.img1,
     required this.img2,
     required this.whole_ans
